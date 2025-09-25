@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phonebook</title>
+    <link rel="stylesheet" href="{% static 'contacts/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'contacts/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'contacts/css/index_style.css' %}">
+    <style>
+        body{background-image: url("{% static 'contacts/img/backgrounds-blank-blue-953214.jpg' %}");}
+    </style>
+</head>
+<body>
+<div class="jumbotron jum">
+    <div class="navbar">
+        <h3>Phone Book <i class="far fa-address-book"></i></h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 inp">
+            <form method="get" action="{% url 'contacts:search' %}" class="mb-3">
+                <label for="myInput"></label>
+                <input type="text" onkeyup="searchFunction()" id="myInput" name="q" class="form-control mt-2" placeholder="Search" value="{{ request.GET.q }}">
+                <span class="icon text-primary"><i class="fas fa-search"></i></span>
+            </form>
+            <h5 class="mt-2">Add New Contact</h5>
+            <form method="post" action="{% url 'contacts:add' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="text-danger">
+                        {{ form.name.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="text-danger">
+                    {{ form.email.errors }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form.phone.label_tag }}
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <div class="text-danger">
+                    {{ form.phone.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+                <button type="submit" onclick="addContact()" class="btn btn-info w-100 btn1">Add</button>
+            </form>
+
+        </div>
+        <div class="col-lg-8">
+            <table id="myTable" class="table text-justify table-striped">
+                <thead class="tableh1">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>E-mail</th>
+                    <th class="col-1">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>{{ contact.email }}</td>
+                        <td class="col-1">
+                            <a href="{% url 'contacts:edit' contact.id %}" class="btn btn-sm btn-warning mb-1">Edit</a>
+                            <form method="post" action="{% url 'contacts:delete' contact.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                             </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            هیچ مخاطبی ثبت نشده است
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if contacts.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ contacts.previous_page_number }}">« قبلی</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">
+                                صفحه {{ contacts.number }} از {{ contacts.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if contacts.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ contacts.next_page_number }}">بعدی »</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="text-center">Ahmad Al-Shahawi 2019. All rights reserved</footer>
+<script src="{% static 'contacts/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'contacts/js/popper.min.js' %}"></script>
+<script src="{% static 'contacts/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

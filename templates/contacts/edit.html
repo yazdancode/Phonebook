@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Contact</title>
+    <link rel="stylesheet" href="{% static 'contacts/css/bootstrap.min.css' %}">
+</head>
+<body>
+<div class="container mt-5">
+    <h3>Edit Contact: {{ contact.name }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.phone.label_tag }}
+            {{ form.phone }}
+            {% if form.phone.errors %}
+                <div class="text-danger">{{ form.phone.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'contacts:index' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

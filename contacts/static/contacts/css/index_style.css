@@ -1,0 +1,38 @@
+body {
+    color: aliceblue;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.pagination {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.jum {
+    padding: 30px 30px 220px;
+    width: 90%;
+    margin: auto;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+.tableh1 th {
+    width: 30%;
+}
+
+.icon {
+    position: absolute;
+    top: 18px;
+    left: 88%;
+    font-size: 20px;
+}
+
+.alert {
+    display: none;
+}
+
+.btn1 {
+    margin-bottom: 20px;
+}
